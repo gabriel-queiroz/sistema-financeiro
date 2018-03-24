@@ -1,14 +1,18 @@
 package com.gabriel.sistemafinanceiro.service;
 
-import java.math.BigDecimal;
+import static java.util.Objects.isNull;
+
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gabriel.sistemafinanceiro.exceptions.FornecedorNotFoundException;
 import com.gabriel.sistemafinanceiro.exceptions.PedidoNotFoundExeption;
-import com.gabriel.sistemafinanceiro.model.Estado;
+import com.gabriel.sistemafinanceiro.model.Fornecedor;
 import com.gabriel.sistemafinanceiro.model.Pedido;
+import com.gabriel.sistemafinanceiro.repository.FornecedorRepository;
 import com.gabriel.sistemafinanceiro.repository.PedidoRepository;
 
 @Service
@@ -16,6 +20,9 @@ public class PedidoServiceImpl implements PedidoService {
 	
 	@Autowired
 	private PedidoRepository PedidoRepository; 
+	
+	@Autowired
+	private FornecedorRepository fornecedorRepository;
 	
 	@Override
 	public List<Pedido> listAll() {
@@ -38,9 +45,7 @@ public class PedidoServiceImpl implements PedidoService {
 	@Override
 	public Pedido save(Pedido pedido) {
 		
-		pedido.setEstado(Estado.ANDAMENTO);
-		pedido.setLucro(new BigDecimal(0));
-		pedido.setValor(new BigDecimal(0));
+		validFornecedor(pedido);
 		
 		return this.PedidoRepository.save(pedido);
 		
@@ -52,6 +57,26 @@ public class PedidoServiceImpl implements PedidoService {
 		pedido.setCodigo(codigo);
 		
 		return	this.PedidoRepository.save(pedido);
+		
+	}
+	
+	private void validFornecedor(Pedido pedido) {
+		
+		Optional<Fornecedor> fornecedor = null;
+			
+		if(!isNull( pedido.getFornecedor().getCodigo())){
+			
+			fornecedor = this.fornecedorRepository
+							.findById(pedido.getFornecedor().getCodigo());
+			
+		}
+		
+		if(!fornecedor.isPresent()) {
+			
+			throw new FornecedorNotFoundException("fornecedor não encontrado");
+			
+		}
+		
 		
 	}
 
