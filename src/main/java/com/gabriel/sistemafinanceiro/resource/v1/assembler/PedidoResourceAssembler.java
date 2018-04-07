@@ -54,6 +54,8 @@ public class PedidoResourceAssembler extends ResourceAssemblerSupport<Pedido,Ped
 				.dataPagemento(pedidoResource.getDataPagemento())
 				.dataEnvio(pedidoResource.getDataEnvio())
 				.fornecedor(this.assembler.toDomain(pedidoResource.getFornecedor()))
+				.valor(pedidoResource.getValor())
+				.lucro(pedidoResource.getLucro())
 				.build();
 		
 	}
