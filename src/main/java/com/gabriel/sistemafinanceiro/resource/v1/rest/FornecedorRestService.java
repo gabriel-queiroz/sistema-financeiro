@@ -2,6 +2,8 @@ package com.gabriel.sistemafinanceiro.resource.v1.rest;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,7 +69,7 @@ public class FornecedorRestService {
 	@PostMapping()
 	public FornecedorResource save(
 
-			@RequestBody FornecedorResource fornecedorResource) {
+			@RequestBody @Valid FornecedorResource fornecedorResource) {
 
 		return this.fornecedorResourceAssembler.toResource(
 
@@ -82,7 +84,7 @@ public class FornecedorRestService {
 	@PutMapping("/{codigo}")
 	public FornecedorResource update(
 			@PathVariable("codigo")  Long codigo,
-			@RequestBody FornecedorResource fornecedorResource) {
+			@RequestBody @Valid FornecedorResource fornecedorResource) {
 
 		return this.fornecedorResourceAssembler.toResource(
 
