@@ -39,9 +39,9 @@ public class PedidoResource  extends ResourceSupport {
 	@NotNull
 	private FornecedorResource fornecedor;
 	
-	@JsonInclude(Include.NON_NULL)
+	
 	private BigDecimal valor;
 	
-	@JsonInclude(Include.NON_NULL)
+	
 	private BigDecimal lucro;
 }

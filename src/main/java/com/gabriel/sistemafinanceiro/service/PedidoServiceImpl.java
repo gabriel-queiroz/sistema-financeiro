@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.gabriel.sistemafinanceiro.exceptions.FornecedorNotFoundException;
 import com.gabriel.sistemafinanceiro.exceptions.PedidoNotFoundExeption;
+import com.gabriel.sistemafinanceiro.model.Estado;
 import com.gabriel.sistemafinanceiro.model.Fornecedor;
 import com.gabriel.sistemafinanceiro.model.Pedido;
 import com.gabriel.sistemafinanceiro.repository.FornecedorRepository;
@@ -45,7 +46,9 @@ public class PedidoServiceImpl implements PedidoService {
 	@Override
 	public Pedido save(Pedido pedido) {
 		
-		validFornecedor(pedido);
+		pedido.setFornecedor(validFornecedor(pedido));
+		
+		pedido.setEstado(Estado.ANDAMENTO);
 		
 		return this.PedidoRepository.save(pedido);
 		
@@ -56,11 +59,15 @@ public class PedidoServiceImpl implements PedidoService {
 		
 		pedido.setCodigo(codigo);
 		
+		pedido.setEstado(Estado.ANDAMENTO);
+		
 		return	this.PedidoRepository.save(pedido);
+		
+		
 		
 	}
 	
-	private void validFornecedor(Pedido pedido) {
+	private Fornecedor validFornecedor(Pedido pedido) {
 		
 		Optional<Fornecedor> fornecedor = null;
 			
@@ -77,6 +84,7 @@ public class PedidoServiceImpl implements PedidoService {
 			
 		}
 		
+		return fornecedor.get();
 		
 	}
 
